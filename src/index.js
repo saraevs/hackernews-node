@@ -14,6 +14,12 @@ const typeDefs = `
     url: String!
   }
 `
+// dummy data
+let links = [{
+  id: 'link-0',
+  url: 'www.howtographql.com',
+  description: 'Fullstack tutorial for GraphQL'
+}]
 
 // 2 - implementation of the schema
 // structure is the same as the structure of the type definition
@@ -22,9 +28,23 @@ const typeDefs = `
 
 // this schema only has a single root field called info (type = query)
 // when sending a query, mutation or subscription to a graphQL API - they always need to start with a root field
+// const resolvers = {
+//   Query: {
+//     info: () => `This is the API of a Hackernews Clone`
+//   }
+// }
+
+// all fields not just root fields have resolver functions
 const resolvers = {
   Query: {
-    info: () => null
+    info: () => `This is the API of a Hackernews Clone`,
+    feed: () => links,
+  },
+
+  Link: {
+    id: (parent) => parent.id,
+    description: (parent) => parent.description,
+    url: (parent) => parent.url,
   }
 }
 
