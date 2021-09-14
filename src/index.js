@@ -2,18 +2,24 @@
 const { ApolloServer } = require('apollo-server');
 
 // 1 - the type definition which defines the schema
-const typeDefs = `
-  type Query {
-    info: String!
-    feed: [Link!]!
-  }
+// No longer needed because separated out into own file
+// const typeDefs = `
+//   type Query {
+//     info: String!
+//     feed: [Link!]!
+//   }
 
-  type Link {
-    id: ID!
-    description: String!
-    url: String!
-  }
-`
+//   type Mutation {
+//     post(url: String!, description: String!): Link!
+//   }
+
+//   type Link {
+//     id: ID!
+//     description: String!
+//     url: String!
+//   }
+// `
+
 // dummy data
 let links = [{
   id: 'link-0',
@@ -53,7 +59,10 @@ const resolvers = {
 // this tells the server what operations are accepted
 // and how they should be resolved
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
   resolvers,
 })
 
