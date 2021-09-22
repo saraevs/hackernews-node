@@ -47,11 +47,21 @@ const resolvers = {
     feed: () => links,
   },
 
-  Link: {
-    id: (parent) => parent.id,
-    description: (parent) => parent.description,
-    url: (parent) => parent.url,
-  }
+  Mutation: {
+    // 2
+    post: (parent, args) => {
+
+    let idCount = links.length
+
+       const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url,
+      }
+      links.push(link)
+      return link
+    }
+  },
 }
 
 // 3 - schema and resolvers are bundles and passed to ApolloServer
@@ -59,6 +69,7 @@ const resolvers = {
 // this tells the server what operations are accepted
 // and how they should be resolved
 const server = new ApolloServer({
+  // referencing a file that contains the schema definition
   typeDefs: fs.readFileSync(
     path.join(__dirname, 'schema.graphql'),
     'utf8'
